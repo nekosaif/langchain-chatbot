@@ -8,3 +8,4 @@ faiss-cpu>=1.7.4
 pypdf>=3.8.1
 sentence-transformers>=2.2.2
 tiktoken
+slowapi
