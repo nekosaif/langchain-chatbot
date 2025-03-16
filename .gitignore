@@ -1,0 +1,49 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.python-version
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Local development
+test.py
+local_config.py
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Vector store
+app/vector_store/
+
+# Dependency directories
+*/__pycache__
+.pytest_cache/
+
+# Docker
+docker-compose.override.yml
+
+# Render
+render.yaml
+
+# Exceptions (keep empty directories)
+!.gitkeep
