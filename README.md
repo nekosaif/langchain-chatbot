@@ -36,7 +36,7 @@ A production-ready chatbot solution leveraging LangChain, OpenAI GPT, and FastAP
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/langchain-chatbot.git
+git clone https://github.com/nekosaif/langchain-chatbot.git
 cd langchain-chatbot
 
 # Create virtual environment
