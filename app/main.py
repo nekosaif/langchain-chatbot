@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain.chains import RetrievalQA
@@ -6,9 +6,6 @@ from langchain.llms import OpenAI
 from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
 import os
 from dotenv import load_dotenv
 import logging
@@ -19,16 +16,11 @@ load_dotenv()
 # Initialize FastAPI app
 app = FastAPI(title="FAQ Chatbot API", version="1.1.0")
 
-# Configure rate limiter
-limiter = Limiter(key_func=get_remote_address)
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
 # Configure CORS middleware
 origins = [
     "http://localhost:5000",
-    "https://your-heroku-app.herokuapp.com",
-    "https://your-production-domain.com"
+    "https://flask-chatbot-demo-569055f8644e.herokuapp.com/",
+    "https://nekosaif.com/projects"
 ]
 
 app.add_middleware(
@@ -37,7 +29,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
-    expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining"],
     max_age=600
 )
 
@@ -78,8 +69,7 @@ async def startup_event():
     initialize_qa()
 
 @app.post("/ask", summary="Ask a question", response_description="AI-generated answer")
-@limiter.limit("10/minute")
-async def ask_question(request: Request, query: Query):
+async def ask_question(query: Query):
     """
     Process user questions and return AI-generated answers based on FAQ content
     """
@@ -125,7 +115,6 @@ def health_check():
         "status": "healthy",
         "version": "1.1.0",
         "features": {
-            "rate_limit": "10 requests/minute",
             "model": "gpt-3.5-turbo-instruct",
             "vector_store": "FAISS",
             "embeddings": "OpenAI"
